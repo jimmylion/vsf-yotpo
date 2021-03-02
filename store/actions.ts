@@ -261,7 +261,9 @@ export const actions: ActionTree<YotpoState, any> = {
   async loadTotals({ commit }) {
     try {
       const { storeCode } = currentStoreView();
-      let r = await fetch(`${SideRequest(config.api, 'url')}ext/yotpo/${storeCode}`);
+      const totalStoreCode = config.yotpo && config.yotpo[storeCode] && config.yotpo[storeCode].totals
+        ? config.yotpo[storeCode].totals : storeCode
+      let r = await fetch(`${SideRequest(config.api, 'url')}ext/yotpo/${totalStoreCode}`);
       let { result } = await r.json();
       commit(types.SET_TOTALS, result);
     } catch (err) {
